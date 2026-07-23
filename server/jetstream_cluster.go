@@ -7886,7 +7886,7 @@ func (js *jetStream) reconcileDesiredStreamAssignment(_ *subscription, _ *client
 		if sa.Group.Desired == nil && len(sa.Group.Peers) == 1 {
 			sa.Group.Name = groupNameForStream(sa.Group.Peers, sa.Group.Storage)
 		}
-		if err := cc.meta.Propose(encodeUpdateStreamAssignment(sa)); err != nil {
+		if err := cc.meta.Propose(cc.term, encodeUpdateStreamAssignment(sa)); err != nil {
 			return
 		}
 		cc.trackInflightStreamProposal(reconcile.Account, sa, false)
@@ -7894,7 +7894,7 @@ func (js *jetStream) reconcileDesiredStreamAssignment(_ *subscription, _ *client
 
 	// Process any staged consumers.
 	for _, ca := range consumers {
-		if err := cc.meta.Propose(encodeAddConsumerAssignment(ca)); err != nil {
+		if err := cc.meta.Propose(cc.term, encodeAddConsumerAssignment(ca)); err != nil {
 			return
 		}
 		cc.trackInflightConsumerProposal(reconcile.Account, reconcile.Stream, ca, false)
@@ -7951,7 +7951,7 @@ func (js *jetStream) reconcileDesiredConsumerAssignment(_ *subscription, _ *clie
 	if ca.Group.Desired == nil && len(ca.Group.Peers) == 1 {
 		ca.Group.Name = groupNameForConsumer(ca.Group.Peers, ca.Group.Storage)
 	}
-	if err := cc.meta.Propose(encodeAddConsumerAssignment(ca)); err != nil {
+	if err := cc.meta.Propose(cc.term, encodeAddConsumerAssignment(ca)); err != nil {
 		return
 	}
 	cc.trackInflightConsumerProposal(reconcile.Account, reconcile.Stream, ca, false)

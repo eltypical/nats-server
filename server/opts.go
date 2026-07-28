@@ -209,6 +209,7 @@ type LeafNodeOpts struct {
 	Advertise                 string             `json:"-"`
 	NoAdvertise               bool               `json:"-"`
 	ReconnectInterval         time.Duration      `json:"-"`
+	DialTimeout               time.Duration      `json:"dial_timeout,omitempty"`
 	WriteDeadline             time.Duration      `json:"-"`
 	WriteTimeout              WriteTimeoutPolicy `json:"-"`
 
@@ -2846,6 +2847,8 @@ func parseLeafNodes(v any, opts *Options, errors *[]error, warnings *[]error) er
 			opts.LeafNode.Remotes = remotes
 		case "reconnect", "reconnect_delay", "reconnect_interval":
 			opts.LeafNode.ReconnectInterval = parseDuration("reconnect", tk, mv, errors, warnings)
+		case "dial_timeout":
+			opts.LeafNode.DialTimeout = parseDuration("dial_timeout", tk, mv, errors, warnings)
 		case "tls":
 			tc, err := parseTLS(tk, true)
 			if err != nil {

@@ -587,8 +587,11 @@ func (cfg *leafNodeCfg) setConnectDelay(delay time.Duration) {
 // been properly set.
 func (s *Server) setLeafNodeNonExportedOptions() {
 	opts := s.getOpts()
-	s.leafNodeOpts.dialTimeout = opts.LeafNode.dialTimeout
-	if s.leafNodeOpts.dialTimeout == 0 {
+	if opts.LeafNode.DialTimeout > 0 {
+		s.leafNodeOpts.dialTimeout = opts.LeafNode.DialTimeout
+	} else if opts.LeafNode.dialTimeout > 0 {
+		s.leafNodeOpts.dialTimeout = opts.LeafNode.dialTimeout
+	} else {
 		// Use same timeouts as routes for now.
 		s.leafNodeOpts.dialTimeout = DEFAULT_ROUTE_DIAL
 	}

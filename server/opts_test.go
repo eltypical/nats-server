@@ -2371,6 +2371,7 @@ func TestParsingLeafNodesListener(t *testing.T) {
 			key_file: "./configs/certs/key.pem"
 			timeout: 3.3
 		}
+		dial_timeout: "3s"
 	}
 	`
 	conf := createConfFile(t, []byte(content))
@@ -2387,6 +2388,7 @@ func TestParsingLeafNodesListener(t *testing.T) {
 		AuthTimeout: 2.2,
 		Advertise:   "me:22",
 		TLSTimeout:  3.3,
+		DialTimeout: 3 * time.Second,
 	}
 	if opts.LeafNode.TLSConfig == nil {
 		t.Fatalf("Expected TLSConfig, got none")

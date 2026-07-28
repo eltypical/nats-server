@@ -9796,6 +9796,7 @@ func TestLeafNodeConnectionSucceedsEvenWithDelayedFirstINFO(t *testing.T) {
 			ob.LeafNode.Host = "127.0.0.1"
 			ob.LeafNode.Port = -1
 			ob.LeafNode.AuthTimeout = 10
+			ob.LeafNode.DialTimeout = 3 * time.Second
 			if test.websocket {
 				ob.Websocket.Host = "127.0.0.1"
 				ob.Websocket.Port = -1
